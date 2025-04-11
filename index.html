@@ -1,37 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Study Decks - Simple Flashcard App" />
-  <title>Study Decks</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Study Decks</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Add this for icons if needed -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
   <div class="app">
-    <h1>Study Decks</h1>
-    <div class="deck-selector">
-      <label for="deck-select">Choose a Study Deck:</label>
+    <h1>AI Study Decks</h1>
+    
+    <div class="control-group">
+      <label for="deck-select">Select Deck:</label>
       <select id="deck-select">
-        <option value="instance-config">ServiceNow Instance Configuration</option>
-        <option value="data-management">ServiceNow Data Management</option>
-        <option value="collaboration">Configuration Application for Collaboration</option>
+        <option value="js-fundamentals">JavaScript Fundamentals</option>
       </select>
     </div>
-    <h2 id="deck-title">ServiceNow Instance Configuration Flashcards</h2>
+    
+    <div class="control-group">
+      <input type="text" id="topic-input" placeholder="Enter topic (e.g., Python)">
+      <input type="number" id="card-count" min="1" max="20" value="5" placeholder="Number of cards">
+      <button id="generate-btn">Generate New Deck</button>
+    </div>
+    
+    <h2 id="deck-title">JavaScript Fundamentals</h2>
+    
     <div class="flashcard">
-      <h3 id="question">Question will appear here</h3>
-      <p id="answer" class="hidden">Answer will appear here</p>
+      <h3 id="question">What is hoisting in JavaScript?</h3>
+      <p id="answer" class="hidden">JavaScript's default behavior of moving declarations to the top of their scope.</p>
       <button id="show-answer">Show Answer</button>
     </div>
+    
     <div class="navigation">
       <button id="previous">Previous</button>
       <button id="next">Next</button>
     </div>
+    
     <div class="progress">
-      Card <span id="current-card">1</span> of <span id="total-cards">25</span>
+      Card <span id="current-card">1</span> of <span id="total-cards">10</span>
+    </div>
+    
+    <div id="loading" class="hidden">
+      <p>Generating your flashcards...</p>
     </div>
   </div>
-  <script src="script.js"></script>
+
+  <div id="loading-animation" class="hidden">
+    <div class="card-shuffle-loader">
+      <div class="card"></div>
+      <div class="card"></div>
+      <div class="card"></div>
+      <div class="card"></div>
+      <div class="card"></div>
+    </div>
+    <p class="loading-text">Generating your flashcards...</p>
+  </div>
+
+  <script src="App.js"></script>
 </body>
 </html>
