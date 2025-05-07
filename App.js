@@ -12,6 +12,7 @@ const cardCountInput = document.getElementById('card-count');
 const generateBtn = document.getElementById('generate-btn');
 const loadingElement = document.getElementById('loading');
 const deckSelect = document.getElementById('deck-select');
+const apiKey ='AIzaSyAo5UToedOeYTWia-YIwHpoFDvtaCahZds'
 
 // App State
 const state = {
@@ -130,7 +131,7 @@ Rules:
 
     // CORRECTED API ENDPOINT
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=AIzaSyBPk4NYw_5enfX5-OJxYN14haaxFoQxiPM`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=AIzaSyAo5UToedOeYTWia-YIwHpoFDvtaCahZds`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
