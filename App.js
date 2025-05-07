@@ -131,7 +131,7 @@ Rules:
 
     // CORRECTED API ENDPOINT
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=AIzaSyAo5UToedOeYTWia-YIwHpoFDvtaCahZds`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAo5UToedOeYTWia-YIwHpoFDvtaCahZds`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
