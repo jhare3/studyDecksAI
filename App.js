@@ -1,4 +1,7 @@
-// DOM Elements
+// ======================
+// DOM ELEMENT REFERENCES
+// ======================
+
 const questionElement = document.getElementById('question');
 const answerElement = document.getElementById('answer');
 const showAnswerButton = document.getElementById('show-answer');
@@ -12,9 +15,20 @@ const cardCountInput = document.getElementById('card-count');
 const generateBtn = document.getElementById('generate-btn');
 const loadingElement = document.getElementById('loading');
 const deckSelect = document.getElementById('deck-select');
-const apiKey ='AIzaSyAo5UToedOeYTWia-YIwHpoFDvtaCahZds'
 
-// App State
+// ======================
+// ⚠️ TEMPORARY: API KEY EXPOSURE FOR MVP
+// ======================
+// This key is intentionally hardcoded for early-stage development/testing.
+// Before production, this will be moved to a secure environment variable
+// and handled via a server-side proxy to prevent client exposure.
+const apiKey = 'AIzaSyAo5UToedOeYTWia-YIwHpoFDvtaCahZds';
+
+
+// ======================
+// APP STATE
+// ======================
+
 const state = {
   decks: {
     'js-fundamentals': {
@@ -67,8 +81,9 @@ const state = {
   currentCardIndex: 0
 };
 
+
 // ======================
-// Core Functions
+// UI HELPERS
 // ======================
 
 function showLoading(show) {
@@ -96,26 +111,29 @@ function switchToDeck(deckId) {
 function renderCard() {
   const deck = state.decks[state.currentDeckId];
   const card = deck.cards[state.currentCardIndex];
-  
+
   questionElement.textContent = card.question;
   answerElement.textContent = card.answer;
   answerElement.classList.add('hidden');
-  
+
   currentCardElement.textContent = state.currentCardIndex + 1;
   totalCardsElement.textContent = deck.cards.length;
   deckTitle.textContent = deck.name;
 }
 
+
 // ======================
-// Gemini API Integration
+// FLASHCARD GENERATION (GEMINI API)
 // ======================
 
 async function generateNewDeck(topic, count) {
-    showLoading(true);
+  showLoading(true);
+
+  try {
+    const deckName = `${topic.charAt(0).toUpperCase() + topic.slice(1)} Fundamentals`;
     
-    try {
-      const deckName = `${topic.charAt(0).toUpperCase() + topic.slice(1)} Fundamentals`;
-      const prompt = `Generate exactly ${count} flashcard question-answer pairs about ${topic}
+    // Construct Gemini prompt for flashcard generation
+    const prompt = `Generate exactly ${count} flashcard question-answer pairs about ${topic}
 Format as perfect JSON matching this structure:
 {
   "name": "${deckName}",
@@ -129,9 +147,8 @@ Rules:
 3. Questions should test key concepts
 4. Answers should be concise (1-2 sentences)`;
 
-    // CORRECTED API ENDPOINT
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAo5UToedOeYTWia-YIwHpoFDvtaCahZds`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -142,111 +159,108 @@ Rules:
         })
       }
     );
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("API Error Details:", errorData);
-        throw new Error(`API Error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
-      }
-      
-      const data = await response.json();
-      const responseText = data.candidates[0].content.parts[0].text;
-      
-      // Improved JSON parsing with error handling
-      let cleanJson;
-      try {
-        cleanJson = responseText.replace(/```(json)?/g, '').trim();
-        const jsonStart = cleanJson.indexOf('{');
-        const jsonEnd = cleanJson.lastIndexOf('}') + 1;
-        cleanJson = cleanJson.slice(jsonStart, jsonEnd);
-        
-        const parsed = JSON.parse(cleanJson);
-        
-        if (!parsed.cards || !Array.isArray(parsed.cards)) {
-          throw new Error("Invalid deck format - missing cards array");
-        }
-        
-        const deckId = topic.toLowerCase().replace(/\s+/g, '-') + '-fundamentals';
-        state.decks[deckId] = parsed;
-        
-        updateDeckSelector();
-        switchToDeck(deckId);
-        
-      } catch (parseError) {
-        console.error("Parsing Error. Raw Response:", responseText);
-        throw new Error(`Failed to parse API response: ${parseError.message}`);
-      }
-      
-    } catch (error) {
-      console.error("Full Error:", error);
-      alert(`Generation Failed: ${error.message}\nCheck console for details.`);
-    } finally {
-      showLoading(false);
-    }
-  }
 
-  showAnswerButton.addEventListener('click', () => {
-    console.log("Show Answer clicked!"); // Test if this logs
-    answerElement.classList.toggle('hidden');
-  });
-  
-  previousButton.addEventListener('click', () => {
-    console.log("Previous clicked!");
-    const deck = state.decks[state.currentDeckId];
-    state.currentCardIndex = (state.currentCardIndex - 1 + deck.cards.length) % deck.cards.length;
-    renderCard();
-  });
-  
-  nextButton.addEventListener('click', () => {
-    console.log("Next clicked!");
-    const deck = state.decks[state.currentDeckId];
-    state.currentCardIndex = (state.currentCardIndex + 1) % deck.cards.length;
-    renderCard();
-  });
-  
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("API Error Details:", errorData);
+      throw new Error(`API Error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+    }
+
+    const data = await response.json();
+    const responseText = data.candidates[0].content.parts[0].text;
+
+    // Attempt to sanitize and parse the raw JSON text from Gemini
+    let cleanJson;
+    try {
+      cleanJson = responseText.replace(/```(json)?/g, '').trim();
+      const jsonStart = cleanJson.indexOf('{');
+      const jsonEnd = cleanJson.lastIndexOf('}') + 1;
+      cleanJson = cleanJson.slice(jsonStart, jsonEnd);
+
+      const parsed = JSON.parse(cleanJson);
+
+      if (!parsed.cards || !Array.isArray(parsed.cards)) {
+        throw new Error("Invalid deck format - missing cards array");
+      }
+
+      const deckId = topic.toLowerCase().replace(/\s+/g, '-') + '-fundamentals';
+      state.decks[deckId] = parsed;
+
+      updateDeckSelector();
+      switchToDeck(deckId);
+
+    } catch (parseError) {
+      console.error("Parsing Error. Raw Response:", responseText);
+      throw new Error(`Failed to parse API response: ${parseError.message}`);
+    }
+
+  } catch (error) {
+    console.error("Full Error:", error);
+    alert(`Generation Failed: ${error.message}\nCheck console for details.`);
+  } finally {
+    showLoading(false);
+  }
+}
+
 
 // ======================
-// Event Listeners
+// FLASHCARD NAVIGATION
+// ======================
+
+showAnswerButton.addEventListener('click', () => {
+  answerElement.classList.toggle('hidden');
+});
+
+previousButton.addEventListener('click', () => {
+  const deck = state.decks[state.currentDeckId];
+  state.currentCardIndex = (state.currentCardIndex - 1 + deck.cards.length) % deck.cards.length;
+  renderCard();
+});
+
+nextButton.addEventListener('click', () => {
+  const deck = state.decks[state.currentDeckId];
+  state.currentCardIndex = (state.currentCardIndex + 1) % deck.cards.length;
+  renderCard();
+});
+
+
+// ======================
+// FLASHCARD GENERATION EVENT
 // ======================
 
 generateBtn.addEventListener('click', () => {
-    const topic = topicInput.value.trim();
-    const count = Math.min(parseInt(cardCountInput.value), 20) || 5;
-    
-    if (!topic) {
-      alert("Please enter a topic");
-      return;
-    }
-  
-    // Show loading animation
-    const loadingElement = document.getElementById('loading-animation');
-    loadingElement.classList.remove('hidden');
-    
-    // Force a browser repaint to ensure loader is visible
-    void loadingElement.offsetWidth;
-    
-    // Use setTimeout to break up the execution and ensure loader shows
-    setTimeout(async () => {
-      try {
-        // Check if the function returns a Promise
-        const result = generateNewDeck(topic, count);
-        
-        if (result instanceof Promise) {
-          await result; // If it's async, wait for it
-        }
-        // If not async, it will complete synchronously
-      } catch (error) {
-        console.error("Error generating deck:", error);
-        alert("Failed to generate flashcards. Please try again.");
-      } finally {
-        loadingElement.classList.add('hidden');
+  const topic = topicInput.value.trim();
+  const count = Math.min(parseInt(cardCountInput.value), 20) || 5;
+
+  if (!topic) {
+    alert("Please enter a topic");
+    return;
+  }
+
+  const loadingElement = document.getElementById('loading-animation');
+  loadingElement.classList.remove('hidden');
+  void loadingElement.offsetWidth;
+
+  setTimeout(async () => {
+    try {
+      const result = generateNewDeck(topic, count);
+      if (result instanceof Promise) {
+        await result;
       }
-    }, 50); // Minimal delay to ensure UI updates
-  });
+    } catch (error) {
+      console.error("Error generating deck:", error);
+      alert("Failed to generate flashcards. Please try again.");
+    } finally {
+      loadingElement.classList.add('hidden');
+    }
+  }, 50);
+});
 
 
+// ======================
+// INITIALIZATION
+// ======================
 
-// Initialize
 function init() {
   cardCountInput.value = "5";
   updateDeckSelector();

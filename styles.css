@@ -1,4 +1,4 @@
-/* Modern, Professional Flashcard Styling */
+/* Body and Global Styles */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #172c42;
@@ -7,6 +7,7 @@ body {
   color: #333;
 }
 
+/* Main App Container */
 .app {
   max-width: 800px;
   margin: 0 auto;
@@ -16,6 +17,7 @@ body {
   padding: 30px;
 }
 
+/* Header Styles */
 h1 {
   color: #2c3e50;
   text-align: center;
@@ -23,6 +25,7 @@ h1 {
   font-weight: 600;
 }
 
+/* Form Control Group */
 .control-group {
   margin-bottom: 25px;
   display: flex;
@@ -31,12 +34,14 @@ h1 {
   align-items: center;
 }
 
+/* Label Styles */
 label {
   font-weight: 500;
   color: #2c3e50;
   min-width: 100px;
 }
 
+/* Input and Select Styles */
 select, input {
   padding: 12px 15px;
   border: 1px solid #ddd;
@@ -47,12 +52,14 @@ select, input {
   transition: border 0.3s;
 }
 
+/* Input and Select Focus Styles */
 select:focus, input:focus {
   outline: none;
   border-color: #66984a;
   box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
 }
 
+/* Button Styles */
 button {
   background-color: #7bb95a;
   color: white;
@@ -66,6 +73,7 @@ button {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+/* Button Hover and Active States */
 button:hover {
   background-color: #66984a;
   transform: translateY(-1px);
@@ -76,12 +84,14 @@ button:active {
   transform: translateY(0);
 }
 
+/* Disabled Button Styles */
 button:disabled {
   background-color: #b3c6e0;
   cursor: not-allowed;
   transform: none;
 }
 
+/* Flashcard Styles */
 .flashcard {
   background: white;
   border-radius: 12px;
@@ -93,6 +103,7 @@ button:disabled {
   position: relative;
 }
 
+/* Question Text Styling */
 #question {
   font-size: 20px;
   color: #2c3e50;
@@ -100,6 +111,7 @@ button:disabled {
   font-weight: 500;
 }
 
+/* Answer Text Styling */
 #answer {
   font-size: 16px;
   color: #4a4a4a;
@@ -109,10 +121,12 @@ button:disabled {
   margin-top: 15px;
 }
 
+/* Hidden Element Class */
 .hidden {
   display: none;
 }
 
+/* Loading Text Styling */
 #loading {
   text-align: center;
   padding: 20px;
@@ -120,6 +134,7 @@ button:disabled {
   font-style: italic;
 }
 
+/* Navigation Bar Styling */
 .navigation {
   display: flex;
   justify-content: center;
@@ -127,13 +142,14 @@ button:disabled {
   margin: 20px 0;
 }
 
+/* Progress Text Styling */
 .progress {
   text-align: center;
   color: #666;
   font-size: 14px;
 }
 
-/* Modern select dropdown */
+/* Custom Dropdown Styling */
 select {
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23333'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
@@ -143,7 +159,7 @@ select {
   padding-right: 35px;
 }
 
-/* Responsive adjustments */
+/* Responsive Layout Adjustments */
 @media (max-width: 600px) {
   .app {
     padding: 20px;
@@ -159,7 +175,7 @@ select {
   }
 }
 
-/* Loading overlay styles */
+/* Loading Animation Styles */
 #loading-animation {
   position: fixed;
   top: 0;
@@ -174,6 +190,7 @@ select {
   z-index: 1000;
 }
 
+/* Card Shuffle Loader Styles */
 .card-shuffle-loader {
   position: relative;
   width: 100px;
@@ -181,6 +198,7 @@ select {
   margin-bottom: 20px;
 }
 
+/* Individual Card Styles */
 .card {
   position: absolute;
   width: 80px;
@@ -191,6 +209,7 @@ select {
   animation: shuffle 2s infinite ease-in-out;
 }
 
+/* Each Card's Unique Styles */
 .card:nth-child(1) {
   background: #ff5e62;
   animation-delay: 0s;
@@ -226,6 +245,7 @@ select {
   left: 30px;
 }
 
+/* Shuffle Animation Keyframes */
 @keyframes shuffle {
   0%, 100% { transform: translateY(0) rotate(0deg); z-index: 1; }
   25% { transform: translateY(-20px) rotate(5deg); z-index: 2; }
@@ -233,21 +253,18 @@ select {
   75% { transform: translateY(-10px) rotate(3deg); z-index: 2; }
 }
 
+/* Loading Text Styling */
 .loading-text {
   font-size: 1.2rem;
   color: #333;
   margin-top: 20px;
 }
 
+/* Ensuring Hidden Elements Stay Hidden */
 .hidden {
   display: none !important;
 }
 
 #loading-animation.hidden {
-  display: none; /* Instead of opacity: 0 */
-  /* OR if you want fade animation: */
-  /*
-  opacity: 0;
-  pointer-events: none;
-  */
+  display: none; /* Prevents flicker, also consider fade animation */
 }

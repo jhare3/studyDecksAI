@@ -1,53 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <!-- Character encoding and viewport settings for responsiveness -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Application title -->
   <title>AI Study Decks</title>
+  
+  <!-- Link to external CSS stylesheet for styling -->
   <link rel="stylesheet" href="styles.css">
-  <!-- Add this for icons if needed -->
+  
+  <!-- Font Awesome CDN for icons (optional for future use) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
+  <!-- Main container for the app content -->
   <div class="app">
+    
+    <!-- Application heading -->
     <h1>AI Study Decks</h1>
     
+    <!-- Controls for selecting deck and entering user preferences -->
     <div class="control-group">
+      <!-- Dropdown to select a study deck -->
       <label for="deck-select">Select Deck:</label>
       <select id="deck-select">
         <option value="js-fundamentals">JavaScript Fundamentals</option>
       </select>
     </div>
     
+    <!-- Input fields for specifying a topic and number of cards -->
     <div class="control-group">
       <input type="text" id="topic-input" placeholder="Enter topic (e.g., Python)">
       <input type="number" id="card-count" min="1" max="20" value="5" placeholder="Number of cards">
+      <!-- Button to generate a new flashcard deck based on user input -->
       <button id="generate-btn">Generate New Deck</button>
     </div>
     
+    <!-- Flashcard deck title -->
     <h2 id="deck-title">JavaScript Fundamentals</h2>
     
+    <!-- Flashcard content -->
     <div class="flashcard">
+      <!-- Question displayed on the flashcard -->
       <h3 id="question">What is hoisting in JavaScript?</h3>
+      <!-- Answer content, initially hidden -->
       <p id="answer" class="hidden">JavaScript's default behavior of moving declarations to the top of their scope.</p>
+      <!-- Button to reveal the answer -->
       <button id="show-answer">Show Answer</button>
     </div>
     
+    <!-- Navigation buttons for navigating through the flashcards -->
     <div class="navigation">
       <button id="previous">Previous</button>
       <button id="next">Next</button>
     </div>
     
+    <!-- Progress indicator for the flashcard deck -->
     <div class="progress">
       Card <span id="current-card">1</span> of <span id="total-cards">10</span>
     </div>
     
+    <!-- Loading state for when flashcards are being generated -->
     <div id="loading" class="hidden">
       <p>Generating your flashcards...</p>
     </div>
   </div>
 
+  <!-- Loading animation overlay, displayed during flashcard generation -->
   <div id="loading-animation" class="hidden">
+    <!-- Animated card shuffle loader -->
     <div class="card-shuffle-loader">
       <div class="card"></div>
       <div class="card"></div>
@@ -55,9 +80,12 @@
       <div class="card"></div>
       <div class="card"></div>
     </div>
+    <!-- Loading message text -->
     <p class="loading-text">Generating your flashcards...</p>
   </div>
 
+  <!-- External JavaScript file for app functionality -->
   <script src="App.js"></script>
 </body>
+
 </html>
