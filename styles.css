@@ -268,3 +268,16 @@ select {
 #loading-animation.hidden {
   display: none; /* Prevents flicker, also consider fade animation */
 }
+
+.code-block {
+  background-color: #f6f8fa;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  padding: 1em;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.95em;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin-top: 0.5em;
+}

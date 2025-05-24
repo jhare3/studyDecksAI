@@ -113,7 +113,19 @@ function renderCard() {
   const card = deck.cards[state.currentCardIndex];
 
   questionElement.textContent = card.question;
+  // Detect and format code nicely
+if (card.answer.includes('<') || card.answer.includes('`') || card.answer.includes('\n')) {
+  const escaped = card.answer
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+  answerElement.innerHTML = `
+    <pre class="code-block"><code>${escaped}</code></pre>
+  `;
+} else {
   answerElement.textContent = card.answer;
+}
+
   answerElement.classList.add('hidden');
 
   currentCardElement.textContent = state.currentCardIndex + 1;
